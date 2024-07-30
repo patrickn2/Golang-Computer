@@ -11,7 +11,6 @@ import (
 
 type CPU struct {
 	frequency int
-	ticker    *time.Ticker
 	bus       *bus.BUS
 	reader    *bufio.Scanner
 	clocks    int
@@ -20,7 +19,6 @@ type CPU struct {
 func NewCPU(frequency int, bus *bus.BUS) *CPU {
 	return &CPU{
 		frequency: frequency,
-		ticker:    time.NewTicker(time.Second / time.Duration(frequency)),
 		bus:       bus,
 		reader:    bufio.NewScanner(os.Stdin),
 		clocks:    0,
@@ -29,15 +27,13 @@ func NewCPU(frequency int, bus *bus.BUS) *CPU {
 
 func (cpu *CPU) Run() {
 	for {
-		select {
-		case <-cpu.ticker.C:
-			cpu.Clock()
-		}
+		cpu.Clock()
+		time.Sleep(time.Second / time.Duration(cpu.frequency))
 	}
 }
 
 func (cpu *CPU) Clock() {
-	fmt.Println("-CPU Tick", cpu.frequency, cpu.clocks)
+	fmt.Println("-CPU Tick", cpu.frequency, time.Now())
 	if cpu.clocks != 0 {
 		cpu.clocks--
 		return

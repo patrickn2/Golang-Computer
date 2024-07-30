@@ -22,13 +22,12 @@ func NewVideo(frequency int, bus *bus.BUS) *GPU {
 func (gpu *GPU) Run() {
 	for {
 		gpu.Clock()
-		time.Sleep(time.Second / time.Duration(gpu.frequency))
+		time.Sleep(time.Millisecond * 950 / time.Duration(gpu.frequency))
 	}
 }
 
 func (gpu *GPU) Clock() {
-	fmt.Println("GPU Tick", gpu.frequency, time.Now())
 	if data := gpu.bus.GetDataForGPU(); data != "" {
-		fmt.Println("DATA PRINTED BY GPU", data)
+		go fmt.Println("DATA PRINTED BY GPU", data, time.Now())
 	}
 }

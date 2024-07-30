@@ -9,8 +9,8 @@ import (
 )
 
 // CPU and Video Frequency in Hz
-var cpuFrequency int = 1
-var gpuFrequency int = 4
+var cpuFrequency int = 10
+var gpuFrequency int = 1000
 
 func main() {
 

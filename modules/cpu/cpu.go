@@ -21,20 +21,20 @@ func NewCPU(frequency int, bus *bus.BUS) *CPU {
 		frequency: frequency,
 		bus:       bus,
 		reader:    bufio.NewScanner(os.Stdin),
-		clocks:    0,
+		clocks:    1,
 	}
 }
 
 func (cpu *CPU) Run() {
 	for {
 		cpu.Clock()
-		time.Sleep(time.Second / time.Duration(cpu.frequency))
+		time.Sleep(time.Duration(time.Millisecond * 950 / time.Duration(cpu.frequency)))
 	}
 }
 
 func (cpu *CPU) Clock() {
-	fmt.Println("-CPU Tick", cpu.frequency, time.Now())
-	if cpu.clocks != 0 {
+	go fmt.Println("CPU Tick", time.Now())
+	if cpu.clocks != 1 {
 		cpu.clocks--
 		return
 	}
@@ -43,6 +43,6 @@ func (cpu *CPU) Clock() {
 }
 
 func (cpu *CPU) ExecInstruction() {
-	cpu.clocks = 50
-	cpu.bus.SendDataToBus("GPU", "Hello, I'm the CPU talking to you. I'm Gonna execute again after 50 CPU Ticks")
+	cpu.clocks = 20
+	cpu.bus.SendDataToBus("GPU", fmt.Sprintf("Hello, I'm the CPU talking to you. I'm Gonna execute again after %d CPU Ticks", cpu.clocks))
 }
